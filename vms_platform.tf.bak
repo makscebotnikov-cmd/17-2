@@ -1,0 +1,131 @@
+### Image for VM (Ubuntu)
+
+variable "vm_all_image_family" {
+  type        = string
+  description = "OS image family for all VMs"
+  default     = "ubuntu-2004-lts"
+}
+
+### VM Web variables
+
+variable "vm_web_name" {
+  type        = string
+  description = "VM name"
+  default     = "netology-platform-web"
+}
+
+variable "vm_web_platform_id" {
+  type        = string
+  description = "VM platform"
+  default     = "standard-v3"
+}
+
+variable "vm_web_zone" {
+  type        = string
+  description = "VM availability zone"
+  default     = "ru-central1-a"
+}
+
+variable "vm_web_cores" {
+  type        = number
+  description = "Number of vCPU cores"
+  default     = 2
+}
+
+variable "vm_web_memory" {
+  type        = number
+  description = "RAM in GB"
+  default     = 1
+}
+
+variable "vm_web_core_fraction" {
+  type        = number
+  description = "CPU core fraction %"
+  default     = 20
+}
+
+variable "vm_web_preemptible" {
+  type        = bool
+  description = "Preemptible VM"
+  default     = true
+}
+
+variable "vm_web_nat" {
+  type        = bool
+  description = "Enable NAT for external IP"
+  default     = true
+}
+
+variable "vm_web_serial_port_enable" {
+  type        = number
+  description = "Enable serial console"
+  default     = 1
+}
+
+#variable "vm_web_image_family" {
+#  type        = string
+#  description = "OS image family"
+#  default     = "ubuntu-2004-lts"
+#}
+
+### VM DB variables
+
+variable "vm_db_name" {
+  type        = string
+  description = "DB VM name"
+  default     = "netology-platform-db"
+}
+
+variable "vm_db_platform_id" {
+  type        = string
+  description = "DB VM platform"
+  default     = "standard-v3"
+}
+
+variable "vm_db_zone" {
+  type        = string
+  description = "DB VM availability zone"
+  default     = "ru-central1-b"
+}
+
+variable "vm_db_cores" {
+  type        = number
+  description = "Number of vCPU cores for DB"
+  default     = 2
+}
+
+variable "vm_db_memory" {
+  type        = number
+  description = "RAM in GB for DB"
+  default     = 2
+}
+
+variable "vm_db_core_fraction" {
+  type        = number
+  description = "CPU core fraction % for DB"
+  default     = 20
+}
+
+variable "vm_db_preemptible" {
+  type        = bool
+  description = "Preemptible DB VM"
+  default     = true
+}
+
+variable "vm_db_nat" {
+  type        = bool
+  description = "Enable NAT for external IP for DB"
+  default     = true
+}
+
+variable "vm_db_serial_port_enable" {
+  type        = number
+  description = "Enable serial console for DB"
+  default     = 1
+}
+
+#variable "vm_db_image_family" {
+#  type        = string
+#  description = "OS image family for DB"
+#  default     = "ubuntu-2004-lts"
+#}
