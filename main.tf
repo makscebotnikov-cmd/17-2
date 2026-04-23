@@ -1,0 +1,109 @@
+resource "yandex_vpc_network" "develop" {
+  name = var.vpc_name
+}
+
+# Subnet for WEB VM (zone A)
+resource "yandex_vpc_subnet" "develop_a" {
+  name           = "${var.vpc_name}-a"
+  # zone           = "ru-central1-a"
+  zone           = local.vm_web_zone
+  network_id     = yandex_vpc_network.develop.id
+  v4_cidr_blocks = ["10.0.1.0/24"]
+}
+
+# Subnet for DB VM (zone B)
+resource "yandex_vpc_subnet" "develop_b" {
+  name           = "${var.vpc_name}-b"
+  # zone           = "ru-central1-b"
+  zone           = local.vm_db_zone
+  network_id     = yandex_vpc_network.develop.id
+  v4_cidr_blocks = ["10.0.2.0/24"]
+}
+
+# Image for VM
+data "yandex_compute_image" "ubuntu_vm_all" {
+  # family = var.vm_all_image_family
+  family = local.vm_image_family
+}
+
+# WEB VM
+resource "yandex_compute_instance" "platform" {
+  # name        = var.vm_web_name
+  name        = local.vm_web_name
+  # platform_id = var.vm_web_platform_id
+  platform_id = local.vm_platform
+  # zone        = var.vm_web_zone
+  zone        = local.vm_web_zone
+  
+  resources {
+    # cores         = var.vm_web_cores
+    # memory        = var.vm_web_memory
+    # core_fraction = var.vm_web_core_fraction
+    cores         = var.vms_resources["web"].cores
+    memory        = var.vms_resources["web"].memory
+    core_fraction = var.vms_resources["web"].core_fraction
+  }
+  
+  boot_disk {
+    initialize_params {
+      image_id = data.yandex_compute_image.ubuntu_vm_all.image_id
+    }
+  }
+  
+  scheduling_policy {
+    preemptible = var.vm_web_preemptible
+  }
+  
+  network_interface {
+    subnet_id = yandex_vpc_subnet.develop_a.id
+    nat       = var.vm_web_nat
+  }
+  
+  metadata = {
+    # serial-port-enable = var.vm_web_serial_port_enable
+    # ssh-keys           = "ubuntu:${var.vms_ssh_public_root_key}"
+    serial-port-enable = local.vms_common_metadata["serial-port-enable"]
+    ssh-keys           = "ubuntu:${var.vms_ssh_public_root_key}"
+  }
+}
+
+# DB VM
+resource "yandex_compute_instance" "platform_db" {
+  # name        = var.vm_db_name
+  name        = local.vm_db_name
+  # platform_id = var.vm_db_platform_id
+  platform_id = local.vm_platform
+  # zone        = var.vm_db_zone
+  zone        = local.vm_db_zone
+  
+  resources {
+    # cores         = var.vm_db_cores
+    # memory        = var.vm_db_memory
+    # core_fraction = var.vm_db_core_fraction
+    cores         = var.vms_resources["db"].cores
+    memory        = var.vms_resources["db"].memory
+    core_fraction = var.vms_resources["db"].core_fraction
+  }
+  
+  boot_disk {
+    initialize_params {
+      image_id = data.yandex_compute_image.ubuntu_vm_all.image_id
+    }
+  }
+  
+  scheduling_policy {
+    preemptible = var.vm_db_preemptible
+  }
+  
+  network_interface {
+    subnet_id = yandex_vpc_subnet.develop_b.id
+    nat       = var.vm_db_nat
+  }
+  
+  metadata = {
+    # serial-port-enable = var.vm_db_serial_port_enable
+    # ssh-keys           = "ubuntu:${var.vms_ssh_public_root_key}"
+    serial-port-enable = local.vms_common_metadata["serial-port-enable"]
+    ssh-keys           = "ubuntu:${var.vms_ssh_public_root_key}"
+  }
+}
