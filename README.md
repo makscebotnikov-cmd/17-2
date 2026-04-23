@@ -1,4 +1,4 @@
-# Домашнее задание к занятию "`Основы Terraform. Yandex Cloud`" - `Чеботников М.Б.`<img width="1313" height="1434" alt="1" src="https://github.com/user-attachments/assets/6a3f75a2-bdec-43f8-911f-7da9661e92c6" />
+# Домашнее задание к занятию "`Основы Terraform. Yandex Cloud`" - `Чеботников М.Б.`
 
 
 ### Цели задания
